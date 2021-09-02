@@ -1,7 +1,7 @@
 # smtp-starttls-ciphers
 BASH script to test the MTA ciphers supported based on the [NCSC security guidelines for TLS](https://www.ncsc.nl/documenten/publicaties/2021/januari/19/ict-beveiligingsrichtlijnen-voor-transport-layer-security-2.1) (Dutch)
 
-Requires a linux environment with openssl and tls 1.3 support.
+Requires a linux environment with openssl and tls 1.3 support. WSL on Windows is also supported.
 
 This script is only intended to ensure the correct ciphers are available. This scripts does not test the correct sequence oth the cipers.
 A good way to complicancy is testing on [internet.nl](https://internet.nl).
