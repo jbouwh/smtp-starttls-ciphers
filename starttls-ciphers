@@ -1,0 +1,108 @@
+#! /bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+starttls-check() {
+  result=""
+  protocol=""
+  if [[ "$3" == "" ]]
+  then
+    echo QUIT | openssl s_client -connect $1:25 -starttls smtp $2 | grep "Cipher is" 2> /dev/null
+    return 0
+  else
+    result=`echo QUIT | openssl s_client -connect $1:25 -starttls smtp -cipher $2 $3 | grep "$2" 2> /dev/null`
+    case $3 in
+      -tls1)
+        protocol="TLS 1.0"
+        ;;
+      -tls1_1)
+        protocol="TLS 1.1"
+        ;;
+      -tls1_2)
+        protocol="TLS 1.2"
+        ;;
+      -tls1_3)
+        protocol="TLS 1.3"
+        ;;
+      -ssl3)
+        protocol="SSL 3.0"
+        ;;
+      -ssl2)
+        protocol="SSL 2.0"
+        ;;
+    esac
+  fi
+  if [[ "$result" == "" ]]
+  then
+    echo -e " > ${RED}N${NC} ${protocol} $2"
+  else
+    echo -e " > ${GREEN}Y${NC} ${protocol} $2"
+  fi
+  return 0
+}
+
+echo "Perfoming cipher tests for $1"
+echo "Best TLS1.3 cipher"
+starttls-check $1 -tls1_3 2> /dev/null
+echo "Best TLS1.2 cipher"
+starttls-check $1 -tls1_2 2> /dev/null
+echo "Test TLS1.1 cipher match"
+starttls-check $1 -tls1_1 2> /dev/null
+echo "Test TLS1.0 cipher match"
+starttls-check $1 -tls1 2> /dev/null
+echo "Test SSL3"
+starttls-check $1 -ssl3 2> /dev/null
+echo "Test SSL2"
+starttls-check $1 -ssl2 2> /dev/null
+
+echo GOOD
+starttls-check $1 ECDHE-ECDSA-AES256-GCM-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-CHACHA20-POLY1305 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES256-GCM-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-RSA-CHACHA20-POLY1305 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
+
+echo SUFFIENT
+starttls-check $1 ECDHE-ECDSA-AES256-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES128-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES256-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES128-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 DHE-RSA-AES256-GCM-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 DHE-RSA-CHACHA20-POLY1305 -tls1_2 2> /dev/null
+starttls-check $1 DHE-RSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 DHE-RSA-AES256-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 DHE-RSA-AES128-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES256-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES128-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES256-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES128-SHA -tls1_1 2> /dev/null
+starttls-check $1 DHE-RSA-AES256-SHA -tls1_1 2> /dev/null
+starttls-check $1 DHE-RSA-AES128-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES256-SHA -tls1 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-AES128-SHA -tls1 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES256-SHA -tls1 2> /dev/null
+starttls-check $1 ECDHE-RSA-AES128-SHA -tls1 2> /dev/null
+starttls-check $1 DHE-RSA-AES256-SHA -tls1 2> /dev/null
+starttls-check $1 DHE-RSA-AES128-SHA -tls1 2> /dev/null
+
+echo FASE OUT!
+starttls-check $1 AES256-GCM-SHA384 -tls1_2 2> /dev/null
+starttls-check $1 AES128-GCM-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 AES256-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 AES128-SHA256 -tls1_2 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-DES-CBC3-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-RSA-DES-CBC3-SHA -tls1_1 2> /dev/null
+starttls-check $1 DHE-RSA-DES-CBC3-SHA -tls1_1 2> /dev/null
+starttls-check $1 AES256-SHA -tls1_1 2> /dev/null
+starttls-check $1 DES-CBC3-SHA -tls1_1 2> /dev/null
+starttls-check $1 ECDHE-ECDSA-DES-CBC3-SHA -tls1 2> /dev/null
+starttls-check $1 ECDHE-RSA-DES-CBC3-SHA -tls1 2> /dev/null
+starttls-check $1 DHE-RSA-DES-CBC3-SHA -tls1 2> /dev/null
+starttls-check $1 AES256-SHA -tls1 2> /dev/null
+starttls-check $1 DES-CBC3-SHA -tls1 2> /dev/null
+starttls-check $1 AES128-SHA -tls1 2> /dev/null
