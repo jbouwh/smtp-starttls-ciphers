@@ -58,4 +58,10 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 
 ![image](https://user-images.githubusercontent.com/7188918/131850223-0a237cc9-b7a5-46cd-9a98-f3e8c66be8b1.png)
 
+###  dane-check
+
+A bonus is the `dane-check` script that verifies the DANE setup for MTA.
+
+Use the command in the form `./dane-check smtp.example.com` to validate DANE.
+
 > Note that only TLS 1.2 or TLS 1.3 are advised protocols to use regardless of the used ciphers.
