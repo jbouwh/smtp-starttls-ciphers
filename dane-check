@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# Checks the DANE validity for MTA
+# requires openssl and ldns utils https://manpages.debian.org/testing/ldnsutils/ldns-dane.1.en.html
+# provide the FQDN of MTA as attribute
+
+# create temporary file
+tmpfile=$(mktemp /tmp/dane-check.XXXXXX)
+
+echo QUIT | openssl s_client -connect $1:25 -starttls smtp -showcerts > $tmpfile 2> /dev/null
+ldns-dane verify $1 25 -c $tmpfile
+rm $tmpfile
