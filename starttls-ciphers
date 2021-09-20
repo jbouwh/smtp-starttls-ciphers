@@ -38,28 +38,64 @@ starttls-check() {
   fi
   if [[ "$result" == "" ]]
   then
-    echo -e " > ${RED}N${NC} ${protocol} $2"
+    case $format in
+      cli)
+        echo -e " > ${RED}N${NC} ${protocol} $2"
+        ;;
+      csv)
+        echo "\"$1\",\"${protocol}\",\"$2\",\"NO\""
+        ;;
+      *)
+        echo "format $format is not supported!"
+    esac
   else
-    echo -e " > ${GREEN}Y${NC} ${protocol} $2"
+    case $format in
+      cli)
+        echo -e " > ${GREEN}Y${NC} ${protocol} $2"
+        ;;
+      csv)
+        echo "\"$1\",\"${protocol}\",\"$2\",\"YES\""
+        ;;
+      *)
+        echo "format $format is not supported!"
+    esac
   fi
   return 0
 }
 
-echo "Perfoming cipher tests for $1"
-echo "Best TLS1.3 cipher"
-starttls-check $1 -tls1_3 2> /dev/null
-echo "Best TLS1.2 cipher"
-starttls-check $1 -tls1_2 2> /dev/null
-echo "Test TLS1.1 cipher match"
-starttls-check $1 -tls1_1 2> /dev/null
-echo "Test TLS1.0 cipher match"
-starttls-check $1 -tls1 2> /dev/null
-echo "Test SSL3"
-starttls-check $1 -ssl3 2> /dev/null
-echo "Test SSL2"
-starttls-check $1 -ssl2 2> /dev/null
+if [[ "$1" == "" ]]
+then
+  echo "Usage: starttls-ciphers FQDN_MAILSERVER [-csv]"
+  exit 1
+fi
 
-echo GOOD
+if [[ "$2" == "-csv" ]]
+then
+  format='csv'
+else
+  format='cli'
+  echo "Perfoming cipher tests for $1"
+  echo "Best TLS1.3 cipher"
+  starttls-check $1 -tls1_3 2> /dev/null
+  echo "Best TLS1.2 cipher"
+  starttls-check $1 -tls1_2 2> /dev/null
+  echo "Test TLS1.1 cipher match"
+  starttls-check $1 -tls1_1 2> /dev/null
+  echo "Test TLS1.0 cipher match"
+  starttls-check $1 -tls1 2> /dev/null
+  echo "Test SSL3"
+  starttls-check $1 -ssl3 2> /dev/null
+  echo "Test SSL2"
+  starttls-check $1 -ssl2 2> /dev/null
+fi
+
+if [[ $format == cli ]]
+then
+  echo "GOOD"
+else
+  cat="GOOD"
+fi
+
 starttls-check $1 ECDHE-ECDSA-AES256-GCM-SHA384 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-ECDSA-CHACHA20-POLY1305 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-ECDSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
@@ -67,7 +103,13 @@ starttls-check $1 ECDHE-RSA-AES256-GCM-SHA384 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-RSA-CHACHA20-POLY1305 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-RSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
 
-echo SUFFIENT
+if [[ $format == cli ]]
+then
+  echo "SUFFIENT"
+else
+  cat="SUFFIENT"
+fi
+
 starttls-check $1 ECDHE-ECDSA-AES256-SHA384 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-ECDSA-AES128-SHA256 -tls1_2 2> /dev/null
 starttls-check $1 ECDHE-RSA-AES256-SHA384 -tls1_2 2> /dev/null
@@ -90,7 +132,13 @@ starttls-check $1 ECDHE-RSA-AES128-SHA -tls1 2> /dev/null
 starttls-check $1 DHE-RSA-AES256-SHA -tls1 2> /dev/null
 starttls-check $1 DHE-RSA-AES128-SHA -tls1 2> /dev/null
 
-echo FASE OUT!
+if [[ $format == cli ]]
+then
+  echo "FASE OUT!"
+else
+  cat="FASE OUT"
+fi
+
 starttls-check $1 AES256-GCM-SHA384 -tls1_2 2> /dev/null
 starttls-check $1 AES128-GCM-SHA256 -tls1_2 2> /dev/null
 starttls-check $1 AES256-SHA256 -tls1_2 2> /dev/null
