@@ -43,10 +43,10 @@ starttls-check() {
         echo -e " > ${RED}N${NC} ${protocol} $2"
         ;;
       csv)
-        echo "\"$1\",\"${protocol}\",\"$2\",\"NO\""
+        echo "\"$1\",\"${protocol}\",\"$2\",\"NO\",\"${cat}\""
         ;;
       *)
-        echo "format $format is not supported!"
+        echo "format ${format} is not supported!"
     esac
   else
     case $format in
@@ -54,10 +54,10 @@ starttls-check() {
         echo -e " > ${GREEN}Y${NC} ${protocol} $2"
         ;;
       csv)
-        echo "\"$1\",\"${protocol}\",\"$2\",\"YES\""
+        echo "\"$1\",\"${protocol}\",\"$2\",\"YES\",\"${cat}\""
         ;;
       *)
-        echo "format $format is not supported!"
+        echo "format ${format} is not supported!"
     esac
   fi
   return 0
