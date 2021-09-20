@@ -51,9 +51,12 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 ## Install
 - Copy the the `starttls-ciphers` script to your system.
 - Make sure the script is executable: `chmod +x starttls-ciphers`
-- Determine the hostname or IP address of MTA you wat to test, e.g.: `dig -t mx example.com` or `nslookup -type=mx example.com`
+
+## Usage
+- Determine the hostname or IP address of MTA you want to test, e.g.: `dig -t mx example.com` or `nslookup -type=mx example.com`
 - Pick the host with the lowest order number: `mx.example.com`
-- Run the script in the current dir (as user): `./starttls-ciphers mx.example.com`
+- You can also use the `getmx` script to get the preferred MTA
+- Run the script in the current dir (as user): `./starttls-ciphers mx.example.com` or use `getmx` and run `./starttls-ciphers \`./getmx example.com\``
 - If you would like the output in CSV, add the `-csv` as second attribute: : `./starttls-ciphers mx.example.com -csv`
 - You should get a result like below:
 
