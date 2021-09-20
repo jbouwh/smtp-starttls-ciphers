@@ -51,10 +51,10 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 ## Install
 - Copy the the `starttls-ciphers` script to your system.
 - Make sure the script is executable: `chmod +x starttls-ciphers`
-- Determine the hostname or IP address of MTA you wat to test, e.g.: `dig -t mx gmail.com` or `nslookup -type=mx gmail.com`
-- Pick the host with the lowest order number: `gmail-smtp-in.l.google.com`
-- Run the script in the current dir (as user): `./starttls-ciphers gmail-smtp-in.l.google.com`
-- If you would like the output in CSV, add the `-csv` as second attribute: : `./starttls-ciphers gmail-smtp-in.l.google.com -csv`
+- Determine the hostname or IP address of MTA you wat to test, e.g.: `dig -t mx example.com` or `nslookup -type=mx example.com`
+- Pick the host with the lowest order number: `mx.example.com`
+- Run the script in the current dir (as user): `./starttls-ciphers mx.example.com`
+- If you would like the output in CSV, add the `-csv` as second attribute: : `./starttls-ciphers mx.example.com -csv`
 - You should get a result like below:
 
 ![image](https://user-images.githubusercontent.com/7188918/131850223-0a237cc9-b7a5-46cd-9a98-f3e8c66be8b1.png)
