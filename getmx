@@ -1,0 +1,27 @@
+#! /bin/bash
+
+if [[ "$1" == "" ]]; then
+	echo "getmx MAIL_DOMAIN"
+	exit 1
+fi
+
+records=`dig $1 MX | grep MX | awk '{ if (int($5)!=0) printf "%d:%s\n",int($5),$6}'`
+
+floor=1000
+firstmx=""
+
+for mx in $records
+do
+	order="`echo $mx | awk -F: '{print $1}'`"
+	relay="`echo $mx | awk -F: '{print $2}'`"
+	if [  $order -le $floor  ]; then
+		floor=$order
+		firstmx=$relay
+	fi
+done
+if [[ "$firstmx" != "" ]]; then
+	echo $firstmx
+	exit 0
+else
+	exit 1
+fi
