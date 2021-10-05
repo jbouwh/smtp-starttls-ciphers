@@ -35,9 +35,7 @@ RUN set -x \
  
 ENV PATH /usr/local/ssl/bin:$PATH
  
-RUN \
-  adduser -D -u 1000 openssl-test && \
-  mkdir /config && \
+RUN adduser -D -u 1000 openssl-test
 
 WORKDIR /home/openssl-test
 
