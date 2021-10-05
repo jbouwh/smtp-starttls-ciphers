@@ -11,10 +11,10 @@ starttls-check() {
   protocol=""
   if [[ "$3" == "" ]]
   then
-    echo QUIT | openssl s_client -connect $1:25 -starttls smtp $2 | grep "Cipher is" 2> /dev/null
+    echo QUIT | timeout 10 openssl s_client -connect $1:25 -starttls smtp $2 | grep "Cipher is" 2> /dev/null
     return 0
   else
-    result=`echo QUIT | openssl s_client -connect $1:25 -starttls smtp -cipher $2 $3 | grep "$2" 2> /dev/null`
+    result=`echo QUIT | timeout 10 openssl s_client -connect $1:25 -starttls smtp -cipher $2 $3 | grep "$2" 2> /dev/null`
     case $3 in
       -tls1)
         protocol="TLS 1.0"
