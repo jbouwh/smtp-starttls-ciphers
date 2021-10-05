@@ -7,12 +7,14 @@ MAINTAINER Jan Bouwhuis <jan@jbsoft.nl>
 RUN set -x \
     && apk add --no-cache \
         bash \
-		wget \
+        wget \
         gcc \
         tar \
         alpine-sdk \
         perl \
         linux-headers \
+        bind-tools \
+        ldns-tools \
     && rm -rf /var/cache/apk/*
 
 # INSTALLATION
