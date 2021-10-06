@@ -3,8 +3,8 @@ BASH script to test the MTA ciphers supported based on the [NCSC security guidel
 
 Requires a linux environment with openssl and tls 1.3 support. WSL on Windows is also supported.
 
-This script is only intended to ensure the correct ciphers are available. This scripts does not test the correct sequence oth the cipers.
-A good way to complicancy is testing on [internet.nl](https://internet.nl).
+This script is only intended to ensure the correct ciphers are available. This scripts does not test the protocols SSL2/SSL3 or the correct sequence of the cipers.
+A good way for cipher and protocol complicancy is using the mail test at [internet.nl](https://internet.nl).
 
 The following ciphers are tested (note that TLS 1.3 is only tested generally):
 
