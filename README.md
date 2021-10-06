@@ -63,8 +63,12 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 ![image](https://user-images.githubusercontent.com/7188918/131850223-0a237cc9-b7a5-46cd-9a98-f3e8c66be8b1.png)
 
 ## Docker support
-A Dockerfile is added to be able to use the tools from a Docker container. Public builds are not yet available.
-To build:
+A Dockerfile is added to be able to use the tools from a Docker container.
+
+A public build is available for the x64 platform:
+- docker pull jbouwh/openssl-test
+
+To build on another platform (takes some time):
 - docker build . -t jbouwh/openssl-test
 
 To use (interactive shell):
