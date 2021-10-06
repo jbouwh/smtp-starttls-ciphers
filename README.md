@@ -3,8 +3,8 @@ BASH script to test the MTA ciphers supported based on the [NCSC security guidel
 
 Requires a linux environment with openssl and tls 1.3 support. WSL on Windows is also supported.
 
-This script is only intended to ensure the correct ciphers are available. This scripts does not test the correct sequence oth the cipers.
-A good way to complicancy is testing on [internet.nl](https://internet.nl).
+This script is only intended to ensure the correct ciphers are available. This scripts does not test the protocols SSL2/SSL3 or the correct sequence of the cipers.
+A good way for cipher and protocol complicancy is using the mail test at [internet.nl](https://internet.nl).
 
 The following ciphers are tested (note that TLS 1.3 is only tested generally):
 
@@ -61,6 +61,17 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 - You should get a result like below:
 
 ![image](https://user-images.githubusercontent.com/7188918/131850223-0a237cc9-b7a5-46cd-9a98-f3e8c66be8b1.png)
+
+## Docker support
+A Dockerfile is added to be able to use the tools from a Docker container. Public builds are not yet available.
+To build:
+- docker build . -t jbouwh/openssl-test
+
+To use (interactive shell):
+- docker run -it --rm jbouwh/openssl-test
+
+To use (directly):
+- docker run -it --rm jbouwh/openssl-test starttls-ciphers \`getmx example.com\`
 
 ###  dane-check
 
