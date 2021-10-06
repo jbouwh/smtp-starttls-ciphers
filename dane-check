@@ -8,5 +8,5 @@
 tmpfile=$(mktemp /tmp/dane-check.XXXXXX)
 
 echo QUIT | openssl s_client -connect $1:25 -starttls smtp -showcerts > $tmpfile 2> /dev/null
-ldns-dane verify $1 25 -c $tmpfile
+ldns-dane -c $tmpfile verify $1 25
 rm $tmpfile
