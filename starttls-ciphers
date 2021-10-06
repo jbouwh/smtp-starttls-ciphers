@@ -28,12 +28,6 @@ starttls-check() {
       -tls1_3)
         protocol="TLS 1.3"
         ;;
-      -ssl3)
-        protocol="SSL 3.0"
-        ;;
-      -ssl2)
-        protocol="SSL 2.0"
-        ;;
     esac
   fi
   if [[ "$result" == "" ]]
@@ -83,15 +77,11 @@ else
   starttls-check $1 -tls1_1 2> /dev/null
   echo "Test TLS1.0 cipher match"
   starttls-check $1 -tls1 2> /dev/null
-  echo "Test SSL3"
-  starttls-check $1 -ssl3 2> /dev/null
-  echo "Test SSL2"
-  starttls-check $1 -ssl2 2> /dev/null
 fi
 
 if [[ $format == cli ]]
 then
-  echo "GOOD"
+  echo "GOOD ciphers"
 else
   cat="GOOD"
 fi
@@ -105,9 +95,9 @@ starttls-check $1 ECDHE-RSA-AES128-GCM-SHA256 -tls1_2 2> /dev/null
 
 if [[ $format == cli ]]
 then
-  echo "SUFFIENT"
+  echo "SUFFICIENT ciphers"
 else
-  cat="SUFFIENT"
+  cat="SUFFICIENT"
 fi
 
 starttls-check $1 ECDHE-ECDSA-AES256-SHA384 -tls1_2 2> /dev/null
@@ -134,7 +124,7 @@ starttls-check $1 DHE-RSA-AES128-SHA -tls1 2> /dev/null
 
 if [[ $format == cli ]]
 then
-  echo "FASE OUT!"
+  echo "FASE OUT ciphers!"
 else
   cat="FASE OUT"
 fi
