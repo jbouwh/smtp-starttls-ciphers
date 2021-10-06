@@ -14,7 +14,6 @@ RUN set -x \
         perl \
         linux-headers \
         bind-tools \
-        ldns-tools \
     && rm -rf /var/cache/apk/*
 
 # INSTALLATION
@@ -41,6 +40,6 @@ RUN adduser -D -u 1000 openssl-test
 
 WORKDIR /home/openssl-test
 
-COPY dane-check getmx starttls-ciphers /usr/local/bin/
+COPY getmx starttls-ciphers /usr/local/bin/
 
 USER openssl-test
