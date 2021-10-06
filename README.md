@@ -62,6 +62,17 @@ The following ciphers are tested (note that TLS 1.3 is only tested generally):
 
 ![image](https://user-images.githubusercontent.com/7188918/131850223-0a237cc9-b7a5-46cd-9a98-f3e8c66be8b1.png)
 
+## Docker support
+A Dockerfile is added to be able to use the tools from a Docker container. Public builds are not yet available.
+To build:
+- docker build . -t jbouwh/openssl-test
+
+To use (interactive shell):
+- docker run -it --rm jbouwh/openssl-test
+
+To use (directly):
+- docker run -it --rm jbouwh/openssl-test starttls-ciphers \`getmx example.com\`
+
 ###  dane-check
 
 A bonus is the `dane-check` script that verifies the DANE setup for MTA.
